@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Music Player</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ffd6d6 50%, #d6fff4 50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .player {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 300px;
+      position: relative;
+    }
+
+    .album-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 20px;
+      object-fit: cover;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 15px 0;
+      color: #1d4032;
+    }
+
+    .progress {
+      width: 100%;
+      height: 5px;
+      background: #ccc;
+      border-radius: 5px;
+      margin: 10px 0;
+      position: relative;
+    }
+
+    .progress-filled {
+      height: 100%;
+      background: #333;
+      width: 0%;
+      border-radius: 5px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+
+    .controls button {
+      background: #2e7d67;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .controls button:hover {
+      background: #256d5b;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="player">
+    <img src="https://i.imgur.com/1pC7zYM.jpeg" alt="Album Cover" class="album-img">
+    <div class="title">APNA BANA LE</div>
+    
+    <div class="progress">
+      <div class="progress-filled" id="progress"></div>
+    </div>
+    
+    <div class="controls">
+      <button onclick="prevSong()">⏮</button>
+      <button onclick="togglePlay()" id="playBtn">▶</button>
+      <button onclick="nextSong()">⏭</button>
+      <button onclick="toggleMute()" id="muteBtn">🔊</button>
+    </div>
+    
+    <audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+  </div>
+
+  <script>
+    const audio = document.getElementById("audio");
+    const playBtn = document.getElementById("playBtn");
+    const muteBtn = document.getElementById("muteBtn");
+    const progress = document.getElementById("progress");
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        playBtn.textContent = "⏸";
+      } else {
+        audio.pause();
+        playBtn.textContent = "▶";
+      }
+    }
+
+    function toggleMute() {
+      audio.muted = !audio.muted;
+      muteBtn.textContent = audio.muted ? "🔇" : "🔊";
+    }
+
+    function prevSong() {
+      audio.currentTime = 0;
+    }
+
+    function nextSong() {
+      audio.currentTime = audio.duration;
+    }
+
+    audio.addEventListener("timeupdate", () => {
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progress.style.width = percent + "%";
+    });
+  </script>
+
+</body>
+</html>
